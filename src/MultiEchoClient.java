@@ -57,9 +57,11 @@ public class MultiEchoClient {
         }
     }
 */
+int i = 0;
 
     private static void sendMessages() {
         Socket socket = null;
+        Boolean accepted = false;
 
         try {
             String message = "", respons;
@@ -82,6 +84,16 @@ public class MultiEchoClient {
                             PrintWriter usernameOutput = new PrintWriter(socket.getOutputStream(), true);
                             String joinOutput = "JOIN "+username+", "+ip+":"+port;
                             usernameOutput.println(joinOutput);
+
+                            Scanner j_OK = new Scanner(socket.getInputStream());
+                            String joinInput = j_OK.next();
+                            if(joinInput.equals("J_OK")){
+                               accepted = true;
+                            }
+                            if(joinInput.matches("J_ER (.*):(.*)")){
+                                accepted = false;
+                                System.out.println(username_string + " is not allowed!");
+                            }
                         }
                         else{
                             System.out.println(username_string + " is not allowed!");
@@ -89,20 +101,39 @@ public class MultiEchoClient {
                     }else
                         {System.out.println(username_string + " is above 12 characters");}
                 } else {
+                    if(accepted){
+
+                        System.out.println("Type message and press enter to send (Max 255 characters)");
+
                     Scanner userEntry = new Scanner(System.in);
 
-                    Scanner networkInput = new Scanner(socket.getInputStream());
-                    PrintWriter networkOutput = new PrintWriter(socket.getOutputStream(), true);
+                    Scanner messageInput = new Scanner(socket.getInputStream());
+                    PrintWriter messageOutput = new PrintWriter(socket.getOutputStream(), true);
 
-                    System.out.println("Enter message ('QUIT' to exit): ");
-                    message = userEntry.nextLine();
+                    String userInput = userEntry.nextLine();
+                    if(userInput.length()<=255) {
+                        message = "DATA " + username + ": " + userInput;
+                        System.out.println(message);
 
-                    networkOutput.println(message);
+                        if (message.matches("DATA (.*): (.*)")) {
+                            messageOutput.println(message);
 
-                    respons = networkInput.nextLine();
-
-                        System.out.println("\nSERVER> " + respons);
+                            respons = messageInput.nextLine();
+                            if (respons.matches("DATA (.*): (.*)")) {
+                                System.out.println("\nSERVER> " + respons);
+                            }
+                        }
                     }
+                    else{
+                        System.out.println("Message To Long");
+                    }
+                    }
+                    else {
+                        System.out.println("Client Not Accepted To Server");
+                        message = "QUIT";
+                        sendMessages();
+                    }
+                }
 
             }
             while (!message.equals("QUIT")) ;

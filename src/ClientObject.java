@@ -1,12 +1,12 @@
 import java.net.SocketAddress;
 
 public class ClientObject {
-    public String getServerSocket() {
-        return serverSocket;
+    public String getIp() {
+        return ip;
     }
 
-    public void setServerSocket(String serverSocket) {
-        this.serverSocket = serverSocket;
+    public void setIp(String ip) {
+        this.ip = ip;
     }
 
     public String getUsername() {
@@ -25,7 +25,16 @@ public class ClientObject {
         this.i = i;
     }
 
-    private String serverSocket;
+    public String getPort() {
+        return port;
+    }
+
+    public void setPort(String port) {
+        this.port = port;
+    }
+
+        private String ip;
+        private String port;
         private String username;
         private int i;
 
