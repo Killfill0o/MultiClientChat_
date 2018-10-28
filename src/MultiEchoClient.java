@@ -92,14 +92,12 @@ int i = 0;
                             }
                             if(joinInput.matches("J_ER (.*):(.*)")){
                                 accepted = false;
-                                System.out.println(username_string + " is not allowed!");
                             }
                         }
                         else{
                             System.out.println(username_string + " is not allowed!");
                         }
-                    }else
-                        {System.out.println(username_string + " is above 12 characters");}
+                    }
                 } else {
                     if(accepted){
 
