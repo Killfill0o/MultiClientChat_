@@ -79,7 +79,7 @@ int i = 0;
 
                             System.out.println(username_string + " is allowed!");
                             username = username_string;
-                            String ip = socket.getInetAddress().toString();
+                            String ip = socket.getLocalAddress().toString();
                             String port = Integer.toString(socket.getLocalPort());
                             PrintWriter usernameOutput = new PrintWriter(socket.getOutputStream(), true);
                             String joinOutput = "JOIN "+username+", "+ip+":"+port;
